@@ -1,7 +1,7 @@
 {
   "name": "pekzep_syllable",
   "version": "0.0.1",
-  "main": "main.js",
+  "main": "pekzep_syllable.js",
   "type": "module",
   "devDependencies": {
     "ava": "^6.2.0"
