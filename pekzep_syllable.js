@@ -1,4 +1,4 @@
-function from_latin(input_string) {
+export function from_latin(input_string) {
     const has_onset = input_string.match(/^[^aeiouy]/i) !== null;
     const has_tone_letter = input_string.match(/[012]$/i) !== null;
 
@@ -33,16 +33,7 @@ function normalize_z(o) {
     return o;
 }
 
-console.log(from_latin("y"));
-console.log(from_latin("i2"));
-console.log(from_latin("ap1"));
-console.log(from_latin("po1"));
-console.log(from_latin("uaip2"));
-console.log(from_latin("hue"));
-console.log(from_latin("huep2"));
-console.log(from_latin("zap2"));
-
-function to_kana(o) {
+export function to_kana(o) {
     const tone_mark = ['·', '→', '⤴'][o.tone];
 
     let onset_plus_nucleus = (() => {
@@ -115,12 +106,3 @@ function to_kana(o) {
 
     return onset_plus_nucleus + coda + tone_mark;
 }
-
-console.log(to_kana(from_latin("y")));
-console.log(to_kana(from_latin("i2")));
-console.log(to_kana(from_latin("ap1")));
-console.log(to_kana(from_latin("po1")));
-console.log(to_kana(from_latin("uaip2")));
-console.log(to_kana(from_latin("hue")));
-console.log(to_kana(from_latin("huep2")));
-console.log(to_kana(from_latin("zap2")));

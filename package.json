@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "ava": "^6.2.0"
+  }
+}
