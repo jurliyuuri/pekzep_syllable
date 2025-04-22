@@ -20,10 +20,10 @@ function normalize_z(o) {
     if (
         (o.nucleus === 'a' && o.coda === 'p' && o.tone === '2'
         ) || (o.nucleus === 'a' && o.coda === 't' && o.tone === '1'
-        ) || (o.nucleus === 'au' && o.coda === '' && o.tone === ''
+        ) || (o.nucleus === 'au' && o.coda === '' && o.tone === '0'
         ) || (o.nucleus === 'i' && o.coda === 'p' && o.tone === '1'
         ) || (o.nucleus === 'i' && o.coda === 't' && o.tone === '1'
-        ) || (o.nucleus === 'e' && o.coda === '.' && o.tone === '1'
+        ) || (o.nucleus === 'e' && o.coda === '' && o.tone === '1'
         ) || (o.nucleus === 'e' && o.coda === 'p' && o.tone === '1'
         ) || (o.nucleus === 'ie' && o.coda === '' && o.tone === '1'
         )) {
@@ -48,7 +48,7 @@ export function to_kana(o) {
         const p_plus_nucleus = {
             a: "パー", e: "ペゥー", u: "プー", i: "ピー", ai: "パイ", au: "パウ", ei: "ペイ", o: "ポウ", y: "ピュー",
             ia: "ピアー", ie: "ピエー", iau: "ピアウ", iei: "ピエイ", io: "ピオウ",
-            ua: "プアー", ue: "プェゥー", ui: "プイ", uai: "プアイ", uau: "プアウ", uo: "プオウ"
+            ua: "プアー", ue: "プエゥー", ui: "プイ", uai: "プアイ", uau: "プアウ", uo: "プオウ"
         }[o.nucleus];
 
         const 五十音表 = {
