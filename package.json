@@ -1,9 +1,14 @@
 {
   "name": "pekzep_syllable",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "pekzep_syllable.js",
   "type": "module",
   "devDependencies": {
     "ava": "^6.2.0"
-  }
+  },
+  "files": [
+    "pekzep_syllable.js",
+    "pekzep_syllable.d.ts",
+    "pekzep_syllable.test.js"
+  ]
 }
