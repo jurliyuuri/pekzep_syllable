@@ -1,12 +1,24 @@
 <style>
-    table td { padding: 0 5px; }
-    table th { text-align: center; }
-    table td { text-align: right; }
-    .sum { font-weight: bold; }
+    table td {
+        padding: 0 5px;
+    }
+
+    table th {
+        text-align: center;
+    }
+
+    table td {
+        text-align: right;
+    }
+
+    .sum {
+        font-weight: bold;
+    }
 </style>
+
 <body style="font-family: 'Times New Roman', Times, serif">
-<script>
-    const raw_tsv = `.	a	.	.
+    <script>
+        const raw_tsv = `.	a	.	.
 .	a	.	.
 .	a	p	1
 .	a	m	.
@@ -338,66 +350,66 @@ h	ue	t	.
 h	uo	.	2
 h	uo	k	1
 h	uo	k	2`;
-    const dat = raw_tsv.split('\n').map(line => line.split('\t'));
+        const dat = raw_tsv.split('\n').map(line => line.split('\t'));
 
-    // The cols are: [0] = onset, [1] = nucleus, [2] = coda, [3] = tone
+        const onset_list = [".", "p", "b", "m", "c", "s", "x", "ź", "z", "t", "d", "n", "l", "k", "g", "h"];
+        const nucleus_list = [
+            "a", "ia", "ua",
+            "e", "ie", "ue",
+            "u",
+            "i", "ui",
+            "ai", "uai",
+            "au", "iau", "uau",
+            "ei", "iei",
+            "o", "io", "uo",
+            "y"];
 
-    // Plot the onset - nucleus table, to see probability of each nucleus given an onset
-    const onset_nucleus = dat.reduce((acc, [onset, nucleus, coda, tone]) => {
-        if (!acc[onset]) acc[onset] = {};
-        if (!acc[onset][nucleus]) acc[onset][nucleus] = 0;
-        acc[onset][nucleus] += 1;
-        return acc;
-    }, {});
-    const onset_nucleus_table = Object.entries(onset_nucleus).map(([onset, nuclei]) => {
-        return [onset, ...Object.entries(nuclei).map(([nucleus, count]) => `${nucleus} (${count})`)];
-    });
 
-    document.write('<h2>Onset - Nucleus Table</h2>');
+        // The cols are: [0] = onset, [1] = nucleus, [2] = coda, [3] = tone
 
-    let table_html = '<table border="1">';
-    table_html += '<tr><th>Nucleus \\ Onset</th>';
+        // Plot the onset - nucleus table, to see probability of each nucleus given an onset
+        const onset_nucleus = dat.reduce((acc, [onset, nucleus, coda, tone]) => {
+            if (!acc[onset]) acc[onset] = nucleus_list.reduce((acc, nucleus) => {
+                acc[nucleus] = 1 / 32; // add alpha to each cell
+                return acc;
+            }, {});
+            acc[onset][nucleus] += 1;
+            return acc;
+        }, {});
 
-    const onset_list = [".", "p", "b", "m", "c", "s", "x", "ź", "z", "t", "d", "n", "l", "k", "g", "h"];
-    for (const onset of onset_list) {
-        table_html += `<th>${onset}</th>`;
-    }
-    table_html += '<th>Sum</th>';
-    table_html += '</tr>';
+        document.write('<h2>Onset - Nucleus Table</h2>');
 
-    const nucleus_list = [
-        "a", "ia", "ua",
-        "e", "ie", "ue",
-        "u",
-        "i", "ui",
-        "ai", "uai",
-        "au", "iau", "uau",
-        "ei", "iei",
-        "o", "io", "uo",
-        "y"];
+        let table_html = '<table border="1">';
+        table_html += '<tr><th>Nucleus \\ Onset</th>';
 
-    for (const nucleus of nucleus_list) {
-        table_html += `<tr><th>${nucleus}</th>`;
         for (const onset of onset_list) {
-            const count = onset_nucleus[onset] && onset_nucleus[onset][nucleus] ? onset_nucleus[onset][nucleus] : 0;
-            table_html += `<td>${count}</td>`;
+            table_html += `<th>${onset}</th>`;
         }
-        const sum = Object.values(onset_nucleus).reduce((acc, nuclei) => acc + (nuclei[nucleus] || 0), 0);
-        table_html += `<td class="sum">${sum}</td>`;
+        table_html += '<th>Sum</th>';
         table_html += '</tr>';
-    }
-    table_html += '<tr><th>Sum</th>';
-    for (const onset of onset_list) {
-        const sum = onset_nucleus[onset] ? Object.values(onset_nucleus[onset]).reduce((acc, count) => acc + count, 0) : 0;
-        table_html += `<td class="sum">${sum}</td>`;
-    }
 
-    // grand total
-    const grand_total = Object.values(onset_nucleus).reduce((acc, nuclei) => acc + Object.values(nuclei).reduce((acc, count) => acc + count, 0), 0);
-    table_html += `<td class="sum">${grand_total}</td>`;
+        for (const nucleus of nucleus_list) {
+            table_html += `<tr><th>${nucleus}</th>`;
+            for (const onset of onset_list) {
+                const count = onset_nucleus[onset] && onset_nucleus[onset][nucleus] ? onset_nucleus[onset][nucleus] : 0;
+                table_html += `<td>${count}</td>`;
+            }
+            const sum = Object.values(onset_nucleus).reduce((acc, nuclei) => acc + (nuclei[nucleus] || 0), 0);
+            table_html += `<td class="sum">${sum}</td>`;
+            table_html += '</tr>';
+        }
+        table_html += '<tr><th>Sum</th>';
+        for (const onset of onset_list) {
+            const sum = onset_nucleus[onset] ? Object.values(onset_nucleus[onset]).reduce((acc, count) => acc + count, 0) : 0;
+            table_html += `<td class="sum">${sum}</td>`;
+        }
 
-    table_html += '</table>';
+        // grand total
+        const grand_total = Object.values(onset_nucleus).reduce((acc, nuclei) => acc + Object.values(nuclei).reduce((acc, count) => acc + count, 0), 0);
+        table_html += `<td class="sum">${grand_total}</td>`;
 
-    document.write(table_html);
+        table_html += '</table>';
 
-</script>
+        document.write(table_html);
+
+    </script>
