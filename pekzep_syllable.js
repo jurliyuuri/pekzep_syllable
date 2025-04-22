@@ -75,6 +75,16 @@ export function to_kana(o) {
         return 五十音表[o.onset][段] + p_plus_nucleus.slice(1);
     })();
 
+    // 「ホゥ」という notation が日本語話者に通じないことを踏まえ、
+    // 直後に丸くない母音が来る hu- は『ホ』、それ以外は『フ』で綴るようにする
+    if (onset_plus_nucleus.startsWith("ホゥ")) {
+        if (onset_plus_nucleus[2] === "ア" || onset_plus_nucleus[2] === "イ" || onset_plus_nucleus[2] === "エ") {
+            onset_plus_nucleus = onset_plus_nucleus.replace("ホゥ", "ホ");
+        } else {
+            onset_plus_nucleus = onset_plus_nucleus.replace("ホゥ", "フ");
+        }
+    }
+
     if (o.onset === 'ź' && o.nucleus === 'e') {
         onset_plus_nucleus = "チェー";
     }
