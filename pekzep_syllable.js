@@ -1,4 +1,9 @@
 export function from_latin(input_string) {
+    if (input_string === 'ŏ') {
+        // special case for "ŏ", LATIN SMALL LETTER O WITH BREVE
+        return { onset: '', nucleus: 'ŏ', coda: '', tone: '0' };
+    }
+
     const has_onset = input_string.match(/^[^aeiouy]/i) !== null;
     const has_tone_letter = input_string.match(/[012]$/i) !== null;
 
@@ -34,6 +39,15 @@ function normalize_z(o) {
 }
 
 export function to_kana(o) {
+
+    if (o.onset === ''
+        && o.nucleus === 'ŏ'
+        && o.coda === ''
+        && o.tone === '0') {
+        // special case for "ŏ", LATIN SMALL LETTER O WITH BREVE
+        return 'オー·';
+    }
+
     const tone_mark = ['·', '→', '⤴'][o.tone];
 
     let onset_plus_nucleus = (() => {
